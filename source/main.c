@@ -12,9 +12,7 @@
 #include "simAVRHeader.h"
 #endif
 
-#include "ThreeLEDsSM.h"
-#include "BlinkingLEDSM.h"
-#include "output.h"
+#include "timer.h"
 
 static unsigned char outtie = 0, outtie2 = 0;
 const unsigned char taskNum = 2;
@@ -29,9 +27,82 @@ typedef struct task {
 	int (*TickFct)(int)
 } task;
 
+void set_out(){
+	PORTB = outtie | outtie2;
+}
+
+void TimerISR() {
+	for(unsigned char i = 0; i < tasksNum; ++i){
+		if (tasks[i].elapsedTime >= tasks[i].period){
+			tasks[i].state = tasks[i].TickFct(tasks[i].state);
+			tasks[i].elapsedTime = 0;
+		}
+		tasks[i].elapsedTime += tasksPeriodGCD;
+	}
+	
+	set_out();
+}
+
 task tasks[2];
 
-#include "timer.h"
+enum TL_State {ZERO, ONE, TWO};
+enum BL_State {OFF, ON};
+
+int TL_tick(int state){
+	switch(state){ //transitions
+		case ZERO:
+			state = ONE;
+			break;
+			
+		case ONE:
+			state = TWO;
+			break;
+		
+		case TWO:
+			state = ZERO;
+			break;
+	}
+	
+	switch(state){ //actions
+		case ZERO:
+			outtie = 0;
+			break;
+			
+		case ONE:
+			outtie = 1;
+			break;
+		
+		case TWO:
+			outtie = 2;
+			break;
+	}
+	
+	return state;
+}
+
+int BL_tick(int state){
+	switch(state){ //transitions
+		case OFF:
+			state = ON;
+			break;
+			
+		case ON:
+			state = OFF;
+			break;
+	}
+	
+	switch(state){ //actions
+		case OFF:
+			outtie2 = 0x08;
+			break;
+			
+		case ON:
+			outtie2 = 0x00;
+			break;
+	}
+	
+	return state;
+}
 
 int main(void) {
     /* Insert DDR and PORT initializations */

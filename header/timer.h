@@ -38,18 +38,6 @@ void TimerOff() {
     TCCR1B = 0x00; // bit[3:0]=0000 - timer off
 }
 
-void TimerISR() {
-	for(unsigned char i = 0; i < tasksNum; ++i){
-		if (tasks[i].elapsedTime >= tasks[i].period){
-			tasks[i].state = tasks[i].TickFct(tasks[i].state);
-			tasks[i].elapsedTime = 0;
-		}
-		tasks[i].elapsedTime += tasksPeriodGCD;
-	}
-	
-	set_out();
-}
-
 // In our disciplined approach, the C programmer does not touch this ISR, 
 // but rather the TimerISR() abstraction.
 // ISR: Interrupt Service Routine
