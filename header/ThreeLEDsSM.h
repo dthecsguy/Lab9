@@ -15,7 +15,7 @@ int TL_tick(int state){
 			break;
 	}
 	
-	swtich(state){ //actions
+	switch(state){ //actions
 		case ZERO:
 			outtie = 0;
 			break;
