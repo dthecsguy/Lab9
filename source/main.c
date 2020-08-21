@@ -125,7 +125,7 @@ int main(void) {
 	
 		set_out();
 		
-		while(!Timerflag){}
+		while(!TimerFlag){}
 		TimerFlag = 0;
     }
     return 1;
