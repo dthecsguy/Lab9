@@ -106,7 +106,7 @@ int main(void) {
 	tasks[i].elapsedTime = tasks[i].period;
 	tasks[i].TickFct = &BL_tick;
 	++i;
-	tasks[i].state = THREE;
+	tasks[i].state = TWO;
 	tasks[i].period = periodThreeLEDs;
 	tasks[i].elapsedTime = tasks[i].period;
 	tasks[i].TickFct = &TL_tick;
