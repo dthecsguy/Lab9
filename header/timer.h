@@ -1,5 +1,4 @@
 #include <avr/interrupt.h>
-#include "output.h"
 
 volatile unsigned char TimerFlag = 0; // TimerISR() sets this to 1. C programmer should clear to 0.
 
