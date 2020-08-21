@@ -17,7 +17,7 @@
 #define buttons ~PINA
 #define A0 (buttons & 0x01)
 #define A1 (buttons & 0x02)
-#define switch (buttons & 0x04)
+#define SWTCH (buttons & 0x04)
 
 static unsigned char outtie = 0, outtie2 = 0, outtie3 = 0;
 const unsigned char tasksNum = 3;
@@ -105,7 +105,7 @@ int BL_tick(int state){
 }
 
 int SP_tick(int state){
-	if (switch){
+	if (SWTCH){
 		switch(state){ //transitions
 			case OFF:
 				state = ON;
