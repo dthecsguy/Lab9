@@ -1,4 +1,4 @@
-# Array of tests to run (in order)
+c# Array of tests to run (in order)
 # Each test contains
 #   description - 
 #   steps - A list of steps to perform, each step can have
@@ -15,15 +15,20 @@
 # that they are not ran in isolation but in the order shown and the state of the device is not reset or 
 # altered in between executions (unless preconditions are used).
 tests = [ {'description': 'This test will run first.',
-    'steps': [ {'inputs': [('PINA',<val>)], 'iterations': 1 } ],
-    'expected': [('PORT',<val>)],
+    'steps': [ {'inputs': [('PINA',0x00)], 'time': 100 } ],
+    'expected': [('PORT',0x02)],
     },
     {'description': 'This test will run second.',
-    'steps': [ {'inputs': [('PIN', <val>)],'iterations': 1}, # Set PIN to val then run one iteration
-        {'inputs': [('PIN',<val>)], 'time': 300 }, # Set PIN to val then run 300 ms
-        {'inputs': [('PIN',<val>)], 'iterations': 1, 'expected': [('PORT',<val>)]}, 
-        {'inputs': [('PIN',<val>)], 'time': 600}, ],
-    'expected': [('PORT',<val>)],
+    'steps': [ {'inputs': [('PINA', 0x00)],'time': 100}],
+    'expected': [('PORTB',0x0C)],
+    },
+	{'description': 'This test will run third.',
+    'steps': [ {'inputs': [('PINA', 0x00)],'time': 100}],
+    'expected': [('PORTB',0x01)],
+    },
+	{'description': 'This test will run fourth.',
+    'steps': [ {'inputs': [('PINA', 0x00)],'time': 100}],
+    'expected': [('PORTB',0x0A)],
     },
     ]
 
