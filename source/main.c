@@ -161,11 +161,11 @@ int freq_tick(int state) {
 				break;
 				
 			case UP:
-				freq++;
+				periodSpeaker++;
 				break;
 				
 			case DWN:
-				freq--;
+				periodSpeaker--;
 				break;
 		}
 		
