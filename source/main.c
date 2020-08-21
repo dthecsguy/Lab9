@@ -57,15 +57,15 @@ int TL_tick(int state){
 	
 	switch(state){ //actions
 		case ZERO:
-			outtie = 0;
+			outtie = 1;
 			break;
 			
 		case ONE:
-			outtie = 1;
+			outtie = 2;
 			break;
 		
 		case TWO:
-			outtie = 2;
+			outtie = 4;
 			break;
 	}
 	
