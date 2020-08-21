@@ -14,11 +14,12 @@
 
 #include "timer.h"
 
-static unsigned char outtie = 0, outtie2 = 0;
-const unsigned char tasksNum = 2;
+static unsigned char outtie = 0, outtie2 = 0, outtie3 = 0;
+const unsigned char tasksNum = 3;
 const unsigned long periodBlinkLED = 1000;
 const unsigned long periodThreeLEDs = 300;
-const unsigned long tasksPeriodGCD = 100;
+const unsigned long periodSpeaker = 2;
+const unsigned long tasksPeriodGCD = 2;
 
 typedef struct task {
 	int state;
@@ -30,7 +31,7 @@ typedef struct task {
 task tasks[2];
 
 void set_out(){
-	PORTB = outtie | outtie2;
+	PORTB = outtie | outtie2 | outtie3;
 }
 
 void TimerISR() {
@@ -96,6 +97,30 @@ int BL_tick(int state){
 	return state;
 }
 
+int SP_tick(int state){
+	switch(state){ //transitions
+		case OFF:
+			state = ON;
+			break;
+			
+		case ON:
+			state = OFF;
+			break;
+	}
+	
+	switch(state){ //actions
+		case OFF:
+			outtie3 = 0x00;
+			break;
+			
+		case ON:
+			outtie3 = 0x10;
+			break;
+	}
+	
+	return state;
+}
+
 int main(void) {
     /* Insert DDR and PORT initializations */
 	DDRB = 0xFF;	PORTB = 0x00;
@@ -110,6 +135,11 @@ int main(void) {
 	tasks[i].period = periodThreeLEDs;
 	tasks[i].elapsedTime = tasks[i].period;
 	tasks[i].TickFct = &TL_tick;
+	++i;
+	tasks[i].state = OFF;
+	tasks[i].period = periodSpeaker;
+	tasks[i].elapsedTime = tasks[i].period;
+	tasks[i].TickFct = &SP_tick;
 
 	TimerSet(tasksPeriodGCD);
 	TimerOn();
