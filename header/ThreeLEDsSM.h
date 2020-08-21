@@ -1,7 +1,7 @@
 enum TL_State {ZERO, ONE, TWO};
 
 int TL_tick(int state){
-	swtich(state){ //transitions
+	switch(state){ //transitions
 		case ZERO:
 			state = ONE;
 			break;

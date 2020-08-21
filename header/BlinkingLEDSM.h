@@ -1,7 +1,7 @@
 enum BL_State {OFF, ON};
 
 int BL_tick(int state){
-	swtich(state){ //transitions
+	switch(state){ //transitions
 		case OFF:
 			state = ON;
 			break;
