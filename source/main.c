@@ -17,7 +17,7 @@
 #include "timer.h"
 #include "output.h"
 
-unsigned char outtie = 0, outtie2 = 0;
+static unsigned char outtie = 0, outtie2 = 0;
 const unsigned char taskNum = 2;
 const unsigned long periodBlinkLED = 100;
 const unsigned long periodThreeLEDs = 100;
