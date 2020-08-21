@@ -101,12 +101,12 @@ int main(void) {
 	DDRB = 0xFF;	PORTB = 0x00;
 
 	unsigned char i = 0;
-	tasks[i].state = ON;
+	tasks[i].state = OFF;
 	tasks[i].period = periodBlinkLED;
 	tasks[i].elapsedTime = tasks[i].period;
 	tasks[i].TickFct = &BL_tick;
 	++i;
-	tasks[i].state = ZERO;
+	tasks[i].state = THREE;
 	tasks[i].period = periodThreeLEDs;
 	tasks[i].elapsedTime = tasks[i].period;
 	tasks[i].TickFct = &TL_tick;
