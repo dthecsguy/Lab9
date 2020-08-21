@@ -85,11 +85,11 @@ int BL_tick(int state){
 	
 	switch(state){ //actions
 		case OFF:
-			outtie2 = 0x08;
+			outtie2 = 0x00;
 			break;
 			
 		case ON:
-			outtie2 = 0x00;
+			outtie2 = 0x08;
 			break;
 	}
 	
