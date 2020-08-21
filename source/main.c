@@ -46,7 +46,7 @@ void TimerISR() {
 
 enum TL_State {ZERO, ONE, TWO};
 enum BL_State {OFF, ON};
-enum FREQ_State {WAIT, UP, DWN}
+enum FREQ_State {WAIT, UP, DWN};
 
 int TL_tick(int state){
 	switch(state){ //transitions
