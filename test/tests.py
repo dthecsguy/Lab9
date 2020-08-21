@@ -16,7 +16,7 @@ c# Array of tests to run (in order)
 # altered in between executions (unless preconditions are used).
 tests = [ {'description': 'This test will run first.',
     'steps': [ {'inputs': [('PINA',0x00)], 'time': 100 } ],
-    'expected': [('PORT',0x02)],
+    'expected': [('PORTB',0x02)],
     },
     {'description': 'This test will run second.',
     'steps': [ {'inputs': [('PINA', 0x00)],'time': 100}],
