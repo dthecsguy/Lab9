@@ -14,11 +14,17 @@
 
 #include "timer.h"
 
+#define buttons ~PINA
+#define A0 (buttons & 0x01)
+#define A1 (buttons & 0x02)
+#define switch (buttons & 0x04)
+
 static unsigned char outtie = 0, outtie2 = 0, outtie3 = 0;
 const unsigned char tasksNum = 3;
 const unsigned long periodBlinkLED = 1000;
 const unsigned long periodThreeLEDs = 300;
-const unsigned long periodSpeaker = 2;
+unsigned long periodSpeaker = 4;
+unsigned long periodFreq = 100;
 const unsigned long tasksPeriodGCD = 1;
 
 typedef struct task {
@@ -40,6 +46,7 @@ void TimerISR() {
 
 enum TL_State {ZERO, ONE, TWO};
 enum BL_State {OFF, ON};
+enum FREQ_State {WAIT, UP, DWN}
 
 int TL_tick(int state){
 	switch(state){ //transitions
@@ -98,27 +105,71 @@ int BL_tick(int state){
 }
 
 int SP_tick(int state){
-	switch(state){ //transitions
-		case OFF:
-			state = ON;
-			break;
-			
-		case ON:
-			state = OFF;
-			break;
+	if (switch){
+		switch(state){ //transitions
+			case OFF:
+				state = ON;
+				break;
+				
+			case ON:
+				state = OFF;
+				break;
+		}
+		
+		switch(state){ //actions
+			case OFF:
+				outtie3 = 0x00;
+				break;
+				
+			case ON:
+				outtie3 = 0x10;
+				break;
+		}
 	}
-	
-	switch(state){ //actions
-		case OFF:
-			outtie3 = 0x00;
-			break;
-			
-		case ON:
-			outtie3 = 0x10;
-			break;
+	else {
+		state = OFF;
 	}
 	
 	return state;
+}
+
+int freq_tick(int state) {
+	switch(state){ //transitions
+			case WAIT:
+				if(A0){
+					state = UP;
+				}
+				else if(A1){
+					state = DWN;
+				}
+				else {
+					state = WAIT;
+				}
+				break;
+				
+			case UP:
+				state = WAIT;
+				break;
+				
+			case DWN:
+				state = WAIT;
+				break;
+		}
+		
+		switch(state){ //actions
+			case WAIT:
+				break;
+				
+			case UP:
+				freq++;
+				break;
+				
+			case DWN:
+				freq--;
+				break;
+		}
+		
+		return state;
 }
 
 int main(void) {
@@ -140,6 +191,11 @@ int main(void) {
 	tasks[i].period = periodSpeaker;
 	tasks[i].elapsedTime = tasks[i].period;
 	tasks[i].TickFct = &SP_tick;
+	++i;
+	tasks[i].state = WAIT;
+	tasks[i].period = periodFreq;
+	tasks[i].elapsedTime = tasks[i].period;
+	tasks[i].TickFct = &freq_tick;
 
 	TimerSet(tasksPeriodGCD);
 	TimerOn();
