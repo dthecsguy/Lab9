@@ -15,7 +15,7 @@
 #include "timer.h"
 
 static unsigned char outtie = 0, outtie2 = 0;
-const unsigned char taskNum = 2;
+const unsigned char tasksNum = 2;
 const unsigned long periodBlinkLED = 100;
 const unsigned long periodThreeLEDs = 100;
 const unsigned long tasksPeriodGCD = 100;
@@ -26,6 +26,8 @@ typedef struct task {
 	unsigned long elapsedTime;
 	int (*TickFct)(int)
 } task;
+
+task tasks[2];
 
 void set_out(){
 	PORTB = outtie | outtie2;
@@ -42,8 +44,6 @@ void TimerISR() {
 	
 	set_out();
 }
-
-task tasks[2];
 
 enum TL_State {ZERO, ONE, TWO};
 enum BL_State {OFF, ON};
