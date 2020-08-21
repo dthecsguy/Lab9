@@ -18,7 +18,7 @@ static unsigned char outtie = 0, outtie2 = 0, outtie3 = 0;
 const unsigned char tasksNum = 3;
 const unsigned long periodBlinkLED = 1000;
 const unsigned long periodThreeLEDs = 300;
-const unsigned long periodSpeaker = 8;
+const unsigned long periodSpeaker = 2;
 const unsigned long tasksPeriodGCD = 1;
 
 typedef struct task {
