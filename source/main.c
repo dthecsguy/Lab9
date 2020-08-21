@@ -14,7 +14,6 @@
 
 #include "ThreeLEDsSM.h"
 #include "BlinkingLEDSM.h"
-#include "timer.h"
 #include "output.h"
 
 static unsigned char outtie = 0, outtie2 = 0;
@@ -31,6 +30,8 @@ typedef struct task {
 } task;
 
 task tasks[2];
+
+#include "timer.h"
 
 int main(void) {
     /* Insert DDR and PORT initializations */

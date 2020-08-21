@@ -1,3 +1,6 @@
+static unsigned char outtie = 0, outtie2 = 0;
+
+
 enum TL_State {ZERO, ONE, TWO};
 
 int TL_tick(int state){

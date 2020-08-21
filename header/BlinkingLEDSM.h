@@ -1,3 +1,5 @@
+static unsigned char outtie = 0, outtie2 = 0;
+
 enum BL_State {OFF, ON};
 
 int BL_tick(int state){
