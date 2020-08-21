@@ -12,12 +12,47 @@
 #include "simAVRHeader.h"
 #endif
 
+#include "ThreeLEDsSM.h"
+#include "BlinkingLEDSM.h"
+#include "timer.h"
+#include "output.h"
+
+unsigned char outtie = 0, outtie2 = 0;
+const unsigned char taskNum = 2;
+const unsigned long periodBlinkLED = 100;
+const unsigned long periodThreeLEDs = 100;
+const unsigned long tasksPeriodGCD = 100;
+
+typedef struct task {
+	int state;
+	unsigned long period;
+	unsigned long elapsedTime;
+	int (*TickFct)(int)
+} task;
+
+task tasks[2];
+
 int main(void) {
     /* Insert DDR and PORT initializations */
+	DDRB = 0xFF;	PORTB = 0x00;
 
+	unsigned char i = 0;
+	tasks[i].state = BL_SMStart;
+	tasks[i].period = periodBlinkLED;
+	tasks[i].elapsedTime = tasks[i].period;
+	tasks[i].TickFct = &BL_tick;
+	++i;
+	tasks[i].state = TL_SMStart;
+	tasks[i].period = periodThreeLEDs;
+	tasks[i].elapsedTime = tasks[i].period;
+	tasks[i].TickFct = &TL_tick;
+
+	TimerSet(tasksPeriodGCD);
+	TimerOn();
+	
     /* Insert your solution below */
     while (1) {
-
+		Sleep();
     }
     return 1;
 }
