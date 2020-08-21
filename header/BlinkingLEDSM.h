@@ -11,7 +11,7 @@ int BL_tick(int state){
 			break;
 	}
 	
-	swtich(state){ //actions
+	switch(state){ //actions
 		case OFF:
 			outtie2 = 0x08;
 			break;
