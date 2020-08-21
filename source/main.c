@@ -34,15 +34,7 @@ void set_out(){
 }
 
 void TimerISR() {
-	for(unsigned char i = 0; i < tasksNum; ++i){
-		if (tasks[i].elapsedTime >= tasks[i].period){
-			tasks[i].state = tasks[i].TickFct(tasks[i].state);
-			tasks[i].elapsedTime = 0;
-		}
-		tasks[i].elapsedTime += tasksPeriodGCD;
-	}
-	
-	set_out();
+	TimerFlag = 1;
 }
 
 enum TL_State {ZERO, ONE, TWO};
@@ -124,7 +116,17 @@ int main(void) {
 	
     /* Insert your solution below */
     while (1) {
-		Sleep();
+		for(unsigned char i = 0; i < tasksNum; ++i){
+		if (tasks[i].elapsedTime >= tasks[i].period){
+			tasks[i].state = tasks[i].TickFct(tasks[i].state);
+			tasks[i].elapsedTime = 0;
+		}
+		tasks[i].elapsedTime += tasksPeriodGCD;
+	
+		set_out();
+		
+		while(!Timerflag){}
+		TimerFlag = 0;
     }
     return 1;
 }
